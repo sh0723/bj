@@ -1,0 +1,26 @@
+# 🔹 CMake 빌드 관련 파일 제외
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+*.cmake
+Makefile
+*.ninja
+build/
+
+# 🔹 실행 파일 및 오브젝트 파일 제외
+*.out
+*.o
+*.obj
+*.exe
+*.a
+*.so
+*.dll
+*.dSYM/
+
+# 🔹 CLion 프로젝트 설정 파일 제외
+.idea/
+*.iml
+
+# 🔹 로그 및 기타 불필요한 파일 제외
+*.log
+*.swp
