@@ -5,43 +5,36 @@ using namespace std;
 struct colorStruct {
     int colorArr[3];
 };
-int minValue = INT_MAX;
-int N;
-vector<colorStruct> color;
-void dfs(int price, int houseCount, int selectedColor) {
+int main() {
+    int minValue = INT_MAX;
+    int N;
+    cin >> N;
+    vector<vector<int>> color;
+    vector<vector<int>> minPrice;
 
-    if (houseCount == N) {
-        if (price < minValue) {
-            minValue = price;
-        }
-        return;
+    color.resize(N,vector<int>(3));
+    minPrice.resize(N,vector<int>(3));
+
+    for (int i=0; i<N; i++) {
+        cin >> color[i][0] >> color[i][1] >> color[i][2];
+    }
+
+    minPrice[0][0] = color[0][0];
+    minPrice[0][1] = color[0][1];
+    minPrice[0][2] = color[0][2];
+
+    for (int i=1; i<N; i++) {
+        minPrice[i][0] = min(minPrice[i-1][1],minPrice[i-1][2]) + color[i][0];
+        minPrice[i][1] = min(minPrice[i-1][0],minPrice[i-1][2]) + color[i][1];
+        minPrice[i][2] = min(minPrice[i-1][1],minPrice[i-1][0]) + color[i][2];
     }
 
     for (int i=0; i<3; i++) {
-        if (price != 0 && selectedColor == i)
-            continue;
-        price += color[houseCount].colorArr[i];
-        if (price > minValue) {
-            return;
+        if (minPrice[N-1][i] < minValue) {
+            minValue = minPrice[N-1][i];
         }
-        dfs(price, houseCount+1, i);
-        price -= color[houseCount].colorArr[i];
-    }
-}
-int main() {
-    cin >> N;
-
-    for (int i=0; i<N; i++) {
-        colorStruct colors;
-        cin >> colors.colorArr[0] >> colors.colorArr[1] >> colors.colorArr[2];
-
-        color.push_back(colors);
     }
 
-    dfs(0,0,0);
     cout << minValue;
-
-
-
     return 0;
 }
