@@ -1,37 +1,42 @@
 #include <iostream>
-#include <vector>
+#define MOD 1000000000
 using namespace std;
+
+long long dp[101][10];
+
 int main() {
-    int n;
+    long n;
     cin >> n;
-    vector<int> resultNum(n+1);
-    resultNum[0] = 0;
-    resultNum[1] = 9;
-    resultNum[2] = 17;
-    for (int i=3; i<=n; i++) {
-        resultNum[i] = (resultNum[i-1] - 1 ) * 2;
+
+    for (int i=1; i < 10; i++) {
+        dp[1][i] = 1;
     }
 
-    cout << resultNum[n];
+    for (int i = 2; i <= n; i++) {
+        dp[i][0] = dp[i - 1][1] % MOD;
+        dp[i][9] = dp[i - 1][8] % MOD;
+
+        for (int j = 1; j < 9; j++) {
+            dp[i][j] = (dp[i - 1][j - 1] + dp[i - 1][j + 1]) % MOD;
+        }
+    }
+
+
+    long long result = 0;
+
+
+    for (int i=0 ;i<10; i++) {
+
+        result = (result + (dp[n][i] % MOD)) % MOD;
+    }
+
+    cout << result << endl;
 
     return 0;
+
 }
+
 /*
- f(1) = 9
- f(2) = (f(1) - 1) * 2 + 1
- f(3) =
-
-1 2 3 4 5 6 7 8 9
-
-   12 23 34 45 56 67 78 89
- + 21 32 43 54 65 76 87 98 10
- 17개 - > 2개
-
- 121 123 / 234 232  / 343 345 /  456 454 / 565 567 /  678 676  / 789 787 / 898
- 212 210 / 321 323 / 432 434 /  545 543 / 656 654 /  767 765  / 876 878 / 987 989
- 101
-
-
- 32개 - > 짝에서 홀로 갈 땐 +1 아닐땐 *2
-
+ 0 , 9 에서는 이전의 1, 이전의 8의 값
+ 나머지는 n-1 n+1 의 합과 같다는 것을 활용한 dp문제
  */
