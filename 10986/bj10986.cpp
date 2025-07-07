@@ -8,53 +8,27 @@ int main() {
     cin >> n >> num;
     vector<int> v(n);
     vector<int> count_same_num(num,0);
-    vector<int> v_to_output(n,0);
-    vector<vector<int>> dp(n+1,vector<int>(n+1,0));
+    vector<int> v_to_output(n+1,0);
     for (int i = 0; i < n; i++) {
         cin >> v[i];
     }
 
-    v_to_output[0] = v[0];
-    for (int i = 1; i < n; i++) {
-        v_to_output[i] = v_to_output[i-1] + v[i];
+    count_same_num[0]++;
+    for (int i = 1; i <= n; i++) {
+        v_to_output[i] = (v_to_output[i-1] + v[i-1]) % num;
+        count_same_num[v_to_output[i]]++;
     }
 
-    for (int i = 0; i < n; i++) {
-        v_to_output[i] %= num;
-    }
-
-    for (int i=0; i<num; i++) {
-        for (int j=0; j<n; j++) {
-            if (v_to_output[j] == i) {
-                count_same_num[i]++;
-            }
+    long long count = 0;
+    for (int i = 0; i < num; i++) {
+        if (count_same_num[i] <= 0) {
+            continue;
         }
+        count += 1LL * count_same_num[i] * (count_same_num[i]-1) / 2;
     }
 
-    int output = count_same_num[0];
-    for (int i=0; i<=num; i++) {
-        for (int j=0; j<=i; j++) {
-            if (j == 0 || i == j) {
-                dp[i][j] = 1;
-            } else {
-                dp[i][j] = dp[i-1][j] + dp[i][j-1];
-            }
-        }
-    }
-
-    for (int i=1; i<num; i++) {
-        output += dp[count_same_num[i]][2];
-    }
-
-    cout << output << endl;
+    cout << count << endl;
+    return 0;
 }
 
-/*
-5 3
-1 2 3 1 2
-1 2 9 7 8
-1 3 6 7 9
-
-1 3 1 2 4 2 3 4 1 2
-
- */
+// 전체적인 아이디어는 잘 생각해냄, 하지만 0부터 시작하는 경우를 생각 안함..!
