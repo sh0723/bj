@@ -2,6 +2,7 @@
 cmake-build-*/
 CMakeFiles/
 CMakeCache.txt
+CMakeLists.txt
 *.cmake
 Makefile
 *.ninja
@@ -16,6 +17,7 @@ build/
 *.so
 *.dll
 *.dSYM/
+*.idea
 
 # 🔹 CLion 프로젝트 설정 파일 제외
 .idea/
